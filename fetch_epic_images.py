@@ -1,0 +1,61 @@
+import argparse
+import os
+import requests
+
+from datetime import datetime
+from urllib.parse import urlencode
+from dotenv import load_dotenv
+from download_images import download_image
+
+
+def fetch_epic_images(nasa_token, img_count):
+    nasa_epic_api = 'https://api.nasa.gov/EPIC/api/natural'
+    params = {'api_key': nasa_token}
+    response = requests.get(nasa_epic_api, params=params)
+    response.raise_for_status()
+
+    image_spec = response.json()
+    img_urls = []
+
+    for item in image_spec[:img_count]:
+        date = datetime.strptime(item['date'], '%Y-%m-%d %H:%M:%S')
+        name = item['image']
+        raw_link = f'https://api.nasa.gov/EPIC/archive/natural/{date:%Y/%m/%d}/png/{name}.png'
+        final_link = f'{raw_link}?{urlencode(params)}'
+        img_urls.append((final_link, name))
+
+    return img_urls
+
+
+def download_epic_images(img_urls):
+
+    directory = "Space_photos"
+    os.makedirs(directory, exist_ok=True)
+
+    for img_number, (link, name) in enumerate(img_urls, start=1):
+        filename = f'epic_{img_number}.png'
+        filepath = os.path.join(directory, filename)
+        download_image(link, filepath)
+
+
+def main():
+    load_dotenv()
+
+    nasa_token = os.getenv('NASA_API_KEY')
+
+    parser = argparse.ArgumentParser(
+        description='Скачивает снимки EPIC с NASA'
+    )
+    parser.add_argument('--nasa-token', default=nasa_token, help='API-ключ NASA')
+    parser.add_argument('--count', type=int, default=3, help='Кол-во снимков (по умолчанию 3)')
+    args = parser.parse_args()
+
+    if not args.nasa_token:
+        raise RuntimeError('NASA_API_KEY не найден в .env / не передан через --nasa-token')
+
+    links = fetch_epic_images(args.nasa_token, args.count)
+    download_epic_images(links)
+
+
+if __name__ == '__main__':
+    main()
