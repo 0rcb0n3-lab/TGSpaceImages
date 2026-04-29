@@ -19,11 +19,11 @@ def fetch_spacex_recent_launch(launch_id):
 
     directory = "Space_photos"
 
-    for i, img_url in enumerate(links):
+    for img_number, img_url in enumerate(links, start=1):
         if not img_url:
             continue
 
-        filename = f'spacex_{i+1}.jpg'
+        filename = f'spacex_{img_number}.jpg'
         filepath = os.path.join(directory, filename)
         download_image(img_url, filepath)
 
