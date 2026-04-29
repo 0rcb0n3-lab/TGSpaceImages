@@ -20,8 +20,8 @@ def main():
 
     load_dotenv()
 
-    tgbot_token = os.getenv('TGBOT_TOKEN')
-    tgchat_id = os.getenv('TG_CHAT_ID')
+    tgbot_token = os.environ['TGBOT_TOKEN']
+    tgchat_id = os.environ['TG_CHAT_ID']
     post_delay = float(os.getenv('POST_DELAY_HOURS', delay_hours)) * 3600
 
     bot = telegram.Bot(token=tgbot_token)
