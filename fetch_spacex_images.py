@@ -5,7 +5,10 @@ import requests
 from download_images import download_image
 
 
-def fetch_spacex_recent_launch(launch_id):
+def fetch_spacex_recent_launch(launch_id, directory):
+
+    os.makedirs(directory, exist_ok=True)
+
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     response = requests.get(url)
     response.raise_for_status()
@@ -16,8 +19,6 @@ def fetch_spacex_recent_launch(launch_id):
     if not links:
         print("Изображения не найдены в данных последнего запуска.")
         return
-
-    directory = "Space_photos"
 
     for img_number, img_url in enumerate(links, start=1):
         if not img_url:
@@ -38,9 +39,11 @@ def main():
         help='ID запуска (по умолчанию: 5eb87d47ffd86e000604b38a, '
              'указать "--launch-id latest" для актуального)'
     )
+    parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
+                        help='Каталог для сохранения изображений')
     args = parser.parse_args()
 
-    fetch_spacex_recent_launch(args.launch_id)
+    fetch_spacex_recent_launch(args.launch_id, args.directory)
 
 
 if __name__ == '__main__':

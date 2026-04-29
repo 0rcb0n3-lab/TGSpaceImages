@@ -1,3 +1,4 @@
+import argparse
 import os
 import random
 import telegram
@@ -6,6 +7,13 @@ from download_images import tg_send_image
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Отправляет случайное фото в Telegram")
+    parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
+                        help='Каталог с изображениями')
+    args = parser.parse_args()
+    
+    directory = args.directory
+
     load_dotenv()
 
     tgbot_token = os.environ['TGBOT_TOKEN']
@@ -13,7 +21,6 @@ def main():
 
     bot = telegram.Bot(token=tgbot_token)
 
-    directory = 'Space_photos'
     images = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.png'))]
 
     random_image = random.choice(images)

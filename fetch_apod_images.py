@@ -14,9 +14,8 @@ def fetch_apod_images(nasa_token, count):
     return response.json()
 
 
-def download_apod_images(images):
+def download_apod_images(images, directory):
 
-    directory = "Space_photos"
     os.makedirs(directory, exist_ok=True)
 
     for img_number, image in enumerate(images, start=1):
@@ -41,14 +40,17 @@ def main():
     )
     parser.add_argument('--nasa-token', default=nasa_token, help='API-ключ NASA')
     parser.add_argument('--count', type=int, default=6, help='Кол-во снимков (по умолчанию 6)')
+    parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
+                        help='Каталог для сохранения изображений')
     args = parser.parse_args()
 
+    
     if not args.nasa_token:
         raise RuntimeError('NASA_API_KEY не найден в .env / не передан через --nasa-token')
 
     images = fetch_apod_images(args.nasa_token, args.count)
 
-    download_apod_images(images)
+    download_apod_images(images, args.directory)
 
 
 if __name__ == '__main__':

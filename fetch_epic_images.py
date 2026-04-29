@@ -27,9 +27,8 @@ def fetch_epic_images(nasa_token, img_count):
     return img_urls
 
 
-def download_epic_images(img_urls):
+def download_epic_images(img_urls, directory):
 
-    directory = "Space_photos"
     os.makedirs(directory, exist_ok=True)
 
     for img_number, (link, name) in enumerate(img_urls, start=1):
@@ -48,13 +47,16 @@ def main():
     )
     parser.add_argument('--nasa-token', default=nasa_token, help='API-ключ NASA')
     parser.add_argument('--count', type=int, default=3, help='Кол-во снимков (по умолчанию 3)')
+    parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
+                        help='Каталог для сохранения изображений')
     args = parser.parse_args()
 
+    
     if not args.nasa_token:
         raise RuntimeError('NASA_API_KEY не найден в .env / не передан через --nasa-token')
 
     links = fetch_epic_images(args.nasa_token, args.count)
-    download_epic_images(links)
+    download_epic_images(links, args.directory)
 
 
 if __name__ == '__main__':

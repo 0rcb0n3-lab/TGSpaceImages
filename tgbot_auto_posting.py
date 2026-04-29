@@ -10,15 +10,18 @@ from telegram.error import NetworkError, TimedOut
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Telegram bot для автопостинга фото из папки.")
+    parser = argparse.ArgumentParser(description="Telegram bot для автопостинга фото.")
     parser.add_argument(
         '--delay',
         default=4,
         type=float,
         help='Задержка/Интервал между постами в часах (по умолчанию 4 часа)'
     )
+    parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
+                        help='Каталог с изображениями')
     args = parser.parse_args()
     delay_hours = args.delay
+    directory = args.directory
 
     load_dotenv()
 
@@ -27,7 +30,6 @@ def main():
     post_delay = float(os.getenv('POST_DELAY_HOURS', delay_hours)) * 3600
 
     bot = telegram.Bot(token=tgbot_token)
-    directory = 'Space_photos'
 
     while True:
         images = [file for file in os.listdir(directory) if file.lower().endswith(('.jpg', '.png'))]
