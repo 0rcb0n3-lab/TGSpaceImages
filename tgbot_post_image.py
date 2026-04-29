@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 def main():
     load_dotenv()
 
-    tgbot_token = os.getenv('TGBOT_TOKEN')
-    tg_chat_id = os.getenv('TG_CHAT_ID')
+    tgbot_token = os.environ['TGBOT_TOKEN']
+    tg_chat_id = os.environ['TG_CHAT_ID']
 
     bot = telegram.Bot(token=tgbot_token)
 
