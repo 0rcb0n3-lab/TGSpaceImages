@@ -5,6 +5,7 @@ import random
 import telegram
 
 from dotenv import load_dotenv
+from download_images import tg_send_image
 
 
 def main():
@@ -41,8 +42,7 @@ def main():
             image_path = os.path.join(directory, filename)
 
             try:
-                with open(image_path, 'rb') as image:
-                    bot.send_photo(chat_id=tgchat_id, photo=image)
+                tg_send_image(bot, tgchat_id, image_path)
 
             except FileNotFoundError:
                 print(f"Файл не найден: {image_path}")
