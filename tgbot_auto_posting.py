@@ -6,6 +6,7 @@ import telegram
 
 from dotenv import load_dotenv
 from download_images import tg_send_image
+from telegram.error import NetworkError, TimedOut
 
 
 def main():
@@ -46,6 +47,15 @@ def main():
 
             except FileNotFoundError:
                 print(f"Файл не найден: {image_path}")
+
+            except NetworkError:
+                print(f"(NetworkError) Ошибка отправки {filename}: Повтор через 30 с.")
+                time.sleep(30)
+                continue
+            except TimedOut:
+                print(f"(TimedOut) Ошибка отправки {filename}: Повтор через 30 с.")
+                time.sleep(30)
+                continue
 
             time.sleep(post_delay)
 
