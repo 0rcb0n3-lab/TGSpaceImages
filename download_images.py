@@ -1,5 +1,6 @@
 import os
 import requests
+import telegram
 from urllib.parse import urlsplit, unquote
 
 
@@ -19,3 +20,8 @@ def get_file_format(image_url):
     image_filename = os.path.basename(unquote(image_path))
     img_name, extension = os.path.splitext(image_filename)
     return extension.lower()
+
+
+def tg_send_image(bot, tg_chat_id, image_path):
+    with open(image_path, 'rb') as image:
+        bot.send_photo(chat_id=tg_chat_id, photo=image)
