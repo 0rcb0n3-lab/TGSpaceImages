@@ -3,9 +3,9 @@ import requests
 from urllib.parse import urlsplit, unquote
 
 
-def download_image(image_url, filepath):
+def download_image(image_url, filepath, params=None):
 
-    response = requests.get(image_url)
+    response = requests.get(image_url, params=params)
     response.raise_for_status()
 
     os.makedirs(os.path.dirname(filepath), exist_ok=True)

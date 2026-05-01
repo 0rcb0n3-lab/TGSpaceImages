@@ -21,8 +21,7 @@ def fetch_epic_images(nasa_token, img_count):
         date = datetime.strptime(item['date'], '%Y-%m-%d %H:%M:%S')
         name = item['image']
         raw_link = f'https://api.nasa.gov/EPIC/archive/natural/{date:%Y/%m/%d}/png/{name}.png'
-        final_link = f'{raw_link}?{urlencode(params)}'
-        img_urls.append((final_link, name))
+        img_urls.append((raw_link, name, params))
 
     return img_urls
 
@@ -31,10 +30,10 @@ def download_epic_images(img_urls, directory):
 
     os.makedirs(directory, exist_ok=True)
 
-    for img_number, (link, name) in enumerate(img_urls, start=1):
+    for img_number, (link, name, params) in enumerate(img_urls, start=1):
         filename = f'epic_{img_number}.png'
         filepath = os.path.join(directory, filename)
-        download_image(link, filepath)
+        download_image(link, filepath, params=params)
 
 
 def main():
