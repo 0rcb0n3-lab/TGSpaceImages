@@ -1,8 +1,8 @@
 import os
 import argparse
 import requests
-from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from download_images import download_image, get_file_format
 
 

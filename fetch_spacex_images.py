@@ -2,6 +2,7 @@ import os
 import argparse
 import requests
 
+from dotenv import load_dotenv
 from download_images import download_image
 
 
@@ -28,6 +29,8 @@ def fetch_spacex_recent_launch(launch_id, directory):
 
 
 def main():
+    load_dotenv()
+
     parser = argparse.ArgumentParser(
         description='Скачивает изображения запуска SpaceX по ID'
     )
