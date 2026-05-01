@@ -28,8 +28,6 @@ def fetch_epic_images(nasa_token, img_count):
 
 def download_epic_images(img_urls, directory):
 
-    os.makedirs(directory, exist_ok=True)
-
     for img_number, (link, name, params) in enumerate(img_urls, start=1):
         filename = f'epic_{img_number}.png'
         filepath = os.path.join(directory, filename)

@@ -7,8 +7,6 @@ from download_images import download_image
 
 def fetch_spacex_recent_launch(launch_id, directory):
 
-    os.makedirs(directory, exist_ok=True)
-
     url = f'https://api.spacexdata.com/v5/launches/{launch_id}'
     response = requests.get(url)
     response.raise_for_status()

@@ -16,8 +16,6 @@ def fetch_apod_images(nasa_token, count):
 
 def download_apod_images(images, directory):
 
-    os.makedirs(directory, exist_ok=True)
-
     for img_number, image in enumerate(images, start=1):
         if image.get('media_type') != 'image':
             continue
