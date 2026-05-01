@@ -1,6 +1,5 @@
 import os
 import requests
-import telegram
 from urllib.parse import urlsplit, unquote
 
 
