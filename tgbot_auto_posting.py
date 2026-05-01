@@ -10,6 +10,9 @@ from telegram.error import NetworkError, TimedOut
 
 
 def main():
+
+    load_dotenv()
+
     parser = argparse.ArgumentParser(description="Telegram bot для автопостинга фото.")
     parser.add_argument(
         '--delay',
@@ -22,8 +25,6 @@ def main():
     args = parser.parse_args()
     delay_hours = args.delay
     directory = args.directory
-
-    load_dotenv()
 
     tgbot_token = os.environ['TGBOT_TOKEN']
     tgchat_id = os.environ['TG_CHAT_ID']

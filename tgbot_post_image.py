@@ -7,14 +7,15 @@ from download_images import tg_send_image
 
 
 def main():
+
+    load_dotenv()
+
     parser = argparse.ArgumentParser(description="Отправляет случайное фото в Telegram")
     parser.add_argument('--directory', default=os.getenv('IMAGE_DIRECTORY', 'Space_photos'),
                         help='Каталог с изображениями')
     args = parser.parse_args()
     
     directory = args.directory
-
-    load_dotenv()
 
     tgbot_token = os.environ['TGBOT_TOKEN']
     tg_chat_id = os.environ['TG_CHAT_ID']
